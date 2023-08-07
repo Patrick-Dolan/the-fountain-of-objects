@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TheFountainOfObjects
+﻿namespace TheFountainOfObjects
 {
     internal class Map
     {
         public string[,] MapLocations { get; set; } = new string[4, 4];
-        public Map() { }
+        public int MaxIndex { get; } = 3;
+        public int MinIndex { get; } = 0;
+        public Map() 
+        {
+            MapLocations[0, 0] = "Entrance";
+            MapLocations[0, 2] = "FountainOfObjects";
+        }
     }
 }
