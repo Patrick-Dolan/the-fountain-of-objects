@@ -38,7 +38,7 @@ internal class Program
             if (gameManager.Map.MapLocations[gameManager.Player.CurrentLocation[0], gameManager.Player.CurrentLocation[1]] == "Entrance")
             {
                 Console.ForegroundColor= ConsoleColor.Yellow;
-                Console.WriteLine("You see light coming from the cavern entrance.");
+                Console.WriteLine("You see light coming from outside the cavern. This is the entrance.");
                 Console.ForegroundColor= ConsoleColor.White;
             }
             else if (gameManager.Map.MapLocations[gameManager.Player.CurrentLocation[1], gameManager.Player.CurrentLocation[0]] == "FountainOfObjects")
