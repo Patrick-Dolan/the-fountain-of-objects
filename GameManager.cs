@@ -6,7 +6,7 @@
         public Map Map { get; } = new Map();
         public bool Winner { get; set; } = false;
         public bool FountainEnabled { get; set; } = false;
-        public string[] ValidCommands { get; set; } = new string[] { "enable fountain", "move north", "move east", "move south", "move west" };
+        public string[] ValidCommands { get; set; } = new string[] { "enable fountain", "disable fountain", "move north", "move east", "move south", "move west" };
         public GameManager() { }
         public bool PlayerHasWon() => (FountainEnabled && Player.CurrentLocation[0] == 0 && Player.CurrentLocation[1] == 0);
         public void MovePlayer(string direction)
