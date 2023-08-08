@@ -31,7 +31,9 @@
                     Player.CurrentLocation[0]--;
                     break;
                 default:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: GameManager MovePlayer method invalid input.");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
             }
         }
