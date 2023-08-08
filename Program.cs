@@ -66,12 +66,23 @@ internal class Program
 
             if (userCommand == null) return;
 
+            bool PlayerinFountainChamber = gameManager.Map.MapLocations[gameManager.Player.CurrentLocation[1], gameManager.Player.CurrentLocation[0]] == "FountainOfObjects";
+
             if (gameManager.ValidCommands.Contains(userCommand))
             {
-                if (userCommand == "enable fountain")
+
+                if (userCommand == "enable fountain" && PlayerinFountainChamber)
                 {
                     gameManager.FountainEnabled = true;
-                } 
+                }
+                else if (userCommand == "disable fountain" && PlayerinFountainChamber)
+                {
+                    gameManager.FountainEnabled = false;
+                }
+                else if (userCommand == "enable fountain" || userCommand == "disable fountain")
+                {
+                    Console.WriteLine("The fountain is not in this room so you can't enable or disable it.");
+                }
                 else
                 {
                     gameManager.MovePlayer(userCommand);
