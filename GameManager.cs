@@ -14,6 +14,7 @@
         public void ToggleFountain() => FountainEnabled = !FountainEnabled;
         public void MovePlayer(string direction)
         {
+            if (direction == null) return;
             switch (direction)
             {
                 case "move north":
