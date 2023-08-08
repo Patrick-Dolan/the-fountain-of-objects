@@ -11,18 +11,19 @@ internal class Program
         
         // Intro Text
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("You have entered the cave containing the Fountain of Objects.");
-        Console.WriteLine("Unnatural darkness pervades the caverns, preventing both natural and human-made light.");
-        Console.WriteLine("You must navigate the caverns in the dark, relying on your sense of smell and hearing");
-        Console.WriteLine("to figure out what room you are in and what dangers lurk nearby.");
+        Console.WriteLine("You enter the Cavern of Objects, a maze of rooms filled with dangerous pits, in search of the Fountain of Objects.");
+        Console.WriteLine("Unnatural darkness pervades the caverns, preventing both natural and human-made light. The only light you see is in the entrance.");
+        Console.WriteLine("You must navigate the caverns in the dark, relying on your other senses");
+        Console.WriteLine("Find the Fountain of Objects, activate it, and return to the entrance.");
         Console.ForegroundColor = ConsoleColor.White;
 
-
+        // Game loop
         while (!gameManager.PlayerHasWon())
         {
             PlayerTurn();
         }
 
+        // Game Win
         Console.WriteLine($"You are in the room at (Row={gameManager.Player.CurrentLocation[1]}, Column={gameManager.Player.CurrentLocation[0]}).");
         Console.ForegroundColor= ConsoleColor.Magenta;
         Console.WriteLine("The Fountain of Objects has been reactivated, and you have escaped with your life!");
@@ -31,6 +32,7 @@ internal class Program
         Console.WriteLine("You Win!");
         Console.ForegroundColor = ConsoleColor.White;
 
+        // Methods
         void PlayerTurn()
         {
             Console.WriteLine("---------------------------------------------------------------");
@@ -70,8 +72,11 @@ internal class Program
 
             if (gameManager.ValidCommands.Contains(userCommand))
             {
-
-                if (userCommand == "enable fountain" && PlayerinFountainChamber)
+                if (userCommand == "help")
+                {
+                    DisplayHelpCommands();
+                }
+                else if (userCommand == "enable fountain" && PlayerinFountainChamber)
                 {
                     gameManager.FountainEnabled = true;
                 }
@@ -94,6 +99,21 @@ internal class Program
                 Console.WriteLine("Invalid command. Please try again.");
                 Console.ForegroundColor = ConsoleColor.White;
             }
+        }
+
+        void DisplayHelpCommands()
+        {
+            Console.WriteLine("======================================================================================================");
+            Console.WriteLine("Commands");
+            Console.WriteLine("------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("'help' - Will list all commands available.");
+            Console.WriteLine("'enable fountain' - Will enable the Fountain of Object if you are in room where it is located.");
+            Console.WriteLine("'disable fountain' - Will disable the Fountain of Object if you are in room where it is located.");
+            Console.WriteLine("'move north' - Will move you up one in the current column you are in.");
+            Console.WriteLine("'move south' - Will move you down one in the current column you are in.");
+            Console.WriteLine("'move east' - Will move you up one in the current row you are in.");
+            Console.WriteLine("'move west' - Will move you down one in the current row you are in.");
+            Console.WriteLine("======================================================================================================");
         }
     }
 }
