@@ -8,7 +8,7 @@ internal class Program
         Console.WriteLine("=======================");
 
         GameManager gameManager = new GameManager();
-        
+
         // Intro Text
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine("You enter the Cavern of Objects, a maze of rooms filled with dangerous pits, in search of the Fountain of Objects.");
@@ -20,32 +20,40 @@ internal class Program
         // Game loop
         while (!gameManager.PlayerHasWon())
         {
+            if (gameManager.PlayerDied)
+            {
+                break;
+            }
             PlayerTurn();
         }
 
-        // Game Win
-        Console.WriteLine($"You are in the room at (Row={gameManager.Player.CurrentLocation[1]}, Column={gameManager.Player.CurrentLocation[0]}).");
-        Console.ForegroundColor= ConsoleColor.Magenta;
-        Console.WriteLine("The Fountain of Objects has been reactivated, and you have escaped with your life!");
-        Console.ForegroundColor= ConsoleColor.White;
-        Console.ForegroundColor= ConsoleColor.Green;
-        Console.WriteLine("You Win!");
-        Console.ForegroundColor = ConsoleColor.White;
+        // Game Win/Lose
+        if (gameManager.PlayerHasWon()) 
+        {
+            HandleWin();
+        }
+        else
+        {
+            HandleLose();
+        }
 
         // Methods
         void PlayerTurn()
         {
             Console.WriteLine("---------------------------------------------------------------");
             Console.WriteLine($"You are in the room at (Row={gameManager.Player.CurrentLocation[1]}, Column={gameManager.Player.CurrentLocation[0]}).");
-            if (gameManager.Map.MapLocations[gameManager.Player.CurrentLocation[0], gameManager.Player.CurrentLocation[1]] == "Entrance")
+
+            string playerCurrentLocation = gameManager.Map.MapLocations[gameManager.Player.CurrentLocation[1], gameManager.Player.CurrentLocation[0]];
+
+            if (playerCurrentLocation == "Entrance")
             {
-                Console.ForegroundColor= ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("You see light coming from outside the cavern. This is the entrance.");
-                Console.ForegroundColor= ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.White;
             }
-            else if (gameManager.Map.MapLocations[gameManager.Player.CurrentLocation[1], gameManager.Player.CurrentLocation[0]] == "FountainOfObjects")
+            else if (playerCurrentLocation == "FountainOfObjects")
             {
-                Console.ForegroundColor= ConsoleColor.Blue;
+                Console.ForegroundColor = ConsoleColor.Blue;
                 if (gameManager.FountainEnabled)
                 {
                     Console.WriteLine("You hear the rushing waters from the Fountain of Objects. It has been reactivated!");
@@ -54,9 +62,22 @@ internal class Program
                 {
                     Console.WriteLine("You hear water dripping in this room. The Fountain of Objects is here!");
                 }
-                Console.ForegroundColor= ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.White;
             }
-            HandleUserCommands();
+            else if (playerCurrentLocation == "Pit")
+            {
+                gameManager.PlayerDied = true;
+            }
+            else if (Map.IsAdjacentToPit(gameManager.Player.CurrentLocation[0], gameManager.Player.CurrentLocation[1]))
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("You feel a draft. There is a pit in a nearby room.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            if (!gameManager.PlayerDied)
+            {
+                HandleUserCommands();
+            }
         }
 
         void HandleUserCommands()
@@ -101,8 +122,29 @@ internal class Program
             }
         }
 
+        void HandleWin()
+        {
+            Console.WriteLine($"You are in the room at (Row={gameManager.Player.CurrentLocation[1]}, Column={gameManager.Player.CurrentLocation[0]}).");
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("The Fountain of Objects has been reactivated, and you have escaped with your life!");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("You Win!");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        void HandleLose()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("You fell down a pit and died!");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         void DisplayHelpCommands()
         {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("======================================================================================================");
             Console.WriteLine("Commands");
             Console.WriteLine("------------------------------------------------------------------------------------------------------");
@@ -114,6 +156,7 @@ internal class Program
             Console.WriteLine("'move east' - Will move you up one in the current row you are in.");
             Console.WriteLine("'move west' - Will move you down one in the current row you are in.");
             Console.WriteLine("======================================================================================================");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
